@@ -23,8 +23,9 @@ const cartSchema = new mongoose.Schema({
   },
   quantity: {
     type: Number,
+    required: true,
+    default: 1
   
-   
   }
 
 }],
@@ -42,7 +43,7 @@ const cartSchema = new mongoose.Schema({
 
 cartSchema.methods.calculateTotalPrice = function () {
 
-  this.totalPrice= this.products.reduce((total,product) =>total + product.price,0)
+  this.totalPrice= this.products.reduce((total,product) =>total += product.price * product.quantity,0)
 }
 
 // Creating a model from the schema
