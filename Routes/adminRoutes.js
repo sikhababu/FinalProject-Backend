@@ -1,10 +1,11 @@
 const express = require('express')
-const { register, loginAdmin, logoutAdmin } = require('../Controllers/adminControllers')
+const { register, login } = require('../Controllers/authControllers')
+
 const adminRoutes = express.Router()
 
 
 adminRoutes.post('/signup',register)
-adminRoutes.post('/login',loginAdmin)
-adminRoutes.post('/logout',logoutAdmin)
+adminRoutes.post('/login',login)
+
 
 module.exports = adminRoutes

@@ -1,42 +1,34 @@
+// models/UserModel.js
 const mongoose = require('mongoose');
 
-// Defining a schema for a user
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: function () {
+      return this.role === 'user'; // name required only for regular users
+    }
   },
   email: {
     type: String,
     required: true,
-
     unique: true
-   
   },
   password: {
     type: String,
-    required: true,  
-   
+    required: true
   },
-
   address: {
     type: String,
-    required: true,  
-   
+    required: function () {
+      return this.role === 'user'; // address required only for regular users
+    }
   },
   role: {
     type: String,
-  
-    enum: ['user', 'admin'],
-    default: 'user' 
-   
+    enum: ['user', 'admin', 'seller'],
+    default: 'user'
   }
+}, { timestamps: true });
 
-
-
-}, {timestamps:true});
-
-// Creating a model from the schema
-const UserModel = mongoose.model('users', userSchema);
-
-module.exports= UserModel
+const UserModel = mongoose.model('User', userSchema);
+module.exports = UserModel;

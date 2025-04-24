@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config();
 const app = express()
 const userRoutes = require ('./Routes/userRoutes')
 const {connectDB} = require ('./Config/dbConnection')
@@ -7,6 +8,9 @@ const cors = require('cors')
 const productRoutes = require('./Routes/productRoutes')
 const adminRoutes = require('./Routes/adminRoutes')
 const cartRoutes = require('./Routes/cartRoutes')
+const paymentRouter = require('./Routes/paymentRoutes');
+const sellerRouter = require('./Routes/sellerRoutes');
+
 
 
 //db connection
@@ -23,7 +27,8 @@ app.use('/user', userRoutes)
 app.use('/admin', adminRoutes)
 app.use('/product', productRoutes)
 app.use('/cart', cartRoutes)
-
+app.use('/payment', paymentRouter)
+app.use('/seller', sellerRouter)
 
 app.listen(process.env.PORT,()=>{
 

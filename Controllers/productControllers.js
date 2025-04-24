@@ -5,9 +5,9 @@ const uploadToCloudinary = require("../Utilities/imageUpload")
 const createProduct = async (req, res) => {
     try {
 
-        const { title, description, stock, price } = req.body
+        const { title, description, stock, price, seller } = req.body
 
-        if (!title || !description || !stock || !price) {
+        if (!title || !description || !stock || !price || !seller) {
             return res.status(400).json({ error: "All fields are required" })
         }
         if (!req.file) {
@@ -17,7 +17,7 @@ const createProduct = async (req, res) => {
         const cloudinaryRes = await uploadToCloudinary(req.file.path)
 
         const newProduct = new productModel({
-            title, description, stock, price, image: cloudinaryRes
+            title, description, stock, price, image: cloudinaryRes,seller: req.user.id
         })
 
         let savedProduct = await newProduct.save()
@@ -32,16 +32,16 @@ const createProduct = async (req, res) => {
     }
 }
 
-const listProducts = async (req, res) => {
+const listProducts = async (req, res) => { 
     try {
-        const productList = await productModel.find();
-
-        res.status(200).json(productList)
+      const productList = await productModel.find(); // No filter, fetches all products
+  
+      res.status(200).json(productList);
     } catch (error) {
-        console.log(error);
-        res.status(error.status || 500).json({ error: error.message || "internal server error" })
+      console.log(error);
+      res.status(error.status || 500).json({ error: error.message || "Internal server error" });
     }
-}
+  };
 
 const productDetails = async (req, res) => {
     try {
