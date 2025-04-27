@@ -10,6 +10,8 @@ const adminRoutes = require('./Routes/adminRoutes')
 const cartRoutes = require('./Routes/cartRoutes')
 const paymentRouter = require('./Routes/paymentRoutes');
 const sellerRouter = require('./Routes/sellerRoutes');
+const categoryRoutes = require('./Routes/categoryRoutes');
+const orderRoutes = require('./Routes/orderRoutes');
 
 
 
@@ -29,6 +31,8 @@ app.use('/product', productRoutes)
 app.use('/cart', cartRoutes)
 app.use('/payment', paymentRouter)
 app.use('/seller', sellerRouter)
+app.use('/category', categoryRoutes);
+app.use('/order', orderRoutes);
 
 app.listen(process.env.PORT,()=>{
 
