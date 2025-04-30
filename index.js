@@ -22,7 +22,9 @@ connectDB()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: process.env.FRONTEND_URL
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ['get', 'post', 'delete', 'put', 'option']
 }))
 
 app.use('/user', userRoutes)
@@ -34,10 +36,10 @@ app.use('/seller', sellerRouter)
 app.use('/category', categoryRoutes);
 app.use('/order', orderRoutes);
 
-app.get("/", (req,res) => {
+app.get("/", (req,res) => [
 res.json("Hello World")
 
-})
+])
 
 app.listen(process.env.PORT,()=>{
 
