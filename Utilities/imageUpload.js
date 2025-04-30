@@ -1,4 +1,4 @@
-const cloudinary = require("../config/cloudinaryConfig")
+const cloudinary = require("../Config/cloudinaryConfig")
 
 const uploadToCloudinary = (filePath) => {
     return new Promise((resolve, reject) => {
