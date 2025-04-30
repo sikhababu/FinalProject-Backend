@@ -1,4 +1,5 @@
-const productModel = require("../Model/productModel");
+const productModel = require("../Model/productModel") ;
+
 const uploadToCloudinary = require("../Utilities/imageUpload");
 
 // Create Product
@@ -47,6 +48,22 @@ const listProducts = async (req, res) => {
     }
 };
 
+
+// GET seller products
+const getSellerProducts = async (req, res) => {
+  try {
+    const sellerId = req.user.id;
+
+    const products = await productModel.find({ seller: sellerId });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching seller's products:", error);
+    res.status(500).json({ message: 'Server error fetching your products' });
+  }
+};
+
+
 // Get Product Details
 const productDetails = async (req, res) => {
     try {
@@ -68,7 +85,7 @@ const productDetails = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { productId } = req.params;
-        const { title, description, stock, price, category } = req.body;
+        const { title, description, stock, price, category, seller } = req.body;
 
         let imageUrl;
 
@@ -87,6 +104,7 @@ const updateProduct = async (req, res) => {
             description,
             stock,
             price,
+            seller,
             category: category || isProductExist.category // keep old category if not passed
         };
 
@@ -143,5 +161,6 @@ module.exports = {
     productDetails,
     updateProduct,
     deleteProduct,
-    listProductsByCategory
+    listProductsByCategory,
+    getSellerProducts
 };

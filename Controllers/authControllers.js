@@ -8,6 +8,8 @@ require('dotenv').config()
 const login = async (req, res) => {
     try {
       const { email, password, role } = req.body;
+
+   
   
       if (!email || !password || !role) {
         return res.status(400).json({ error: "All fields are required" });
@@ -83,23 +85,30 @@ catch (error){
     
 }
 
-const updateUser = async (req,res)=> {
-try {
-   
-    const {id} = req.params
-   const updatedUser = await UserModel.findByIdAndUpdate(id,req.body,{new:true})
-   
-   const userObject = updatedUser.toObject()
-   delete userObject.password
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, address, password } = req.body;
 
-    res.status(200).json({message : 'user updated', userObject})
-}
-catch (error){
+    const user = await UserModel.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    res.status(error.status||500).json({error : error.message || "internal server error"})
-}
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (address) user.address = address;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password.toString(), 10);
+      user.password = hashedPassword;
+    } 
 
-}
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message || "Internal server error" });
+  }
+};
 
 const userProfile = async (req,res)=> {
     try{

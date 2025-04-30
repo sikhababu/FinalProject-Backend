@@ -28,11 +28,12 @@ const authMiddleware = async (req, res, next) => {
       role: user.role,
       name: user.name,
       email: user.email,
+      address: user.address,
     };
 
     next();
   } catch (error) {
-    res.status(401).json({ error: "Unauthorized: " + error.message });
+    res.status(401).json({ error: "Unauthorized action: please login" });
   }
 };
 

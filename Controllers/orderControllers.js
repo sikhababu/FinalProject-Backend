@@ -1,35 +1,67 @@
+const CartModel = require("../Model/cartModel");
 const OrderModel = require("../Model/orderModel");
+
 
 
 const createOrder = async (req, res) => {
   try {
-    const { products, totalPrice, address } = req.body;
-    const userId = req.user.id;
+    const userId = req.user.id; // assuming you get it from auth middleware
+    const userAddress = req.user.address; 
+    const cart = await CartModel.findOne({ userId }).populate("products.productId");
+    if (!cart || cart.products.length === 0) {
+      return res.status(400).json({ error: "Cart is empty" });
+    }
+
+    const orderProducts = cart.products.map((item) => ({
+      productId: item.productId._id,
+      quantity: item.quantity,
+      price: item.productId.price,
+    }));
+
+    const totalAmount = cart.totalPrice;
 
     const newOrder = new OrderModel({
       user: userId,
-      products,
-      totalPrice,
-      address
+      products: orderProducts,
+      totalPrice: totalAmount ,
+      address : userAddress,
+      paymentStatus: 'paid'
+      
     });
 
     await newOrder.save();
 
+
+    await CartModel.findOneAndUpdate(
+      { userId },
+      { $set: { products: [], totalPrice: 0 } }
+    );
+    // Clear cart
+    //cart.products = [];
+    //cart.totalPrice = 0;
+    //await cart.save();
+
     res.status(201).json(newOrder);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
+    res.status(500).json({ error: error.message || "Internal server error" });
   }
 };
+
+
 const listUserOrders = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;  
 
-    const orders = await OrderModel.find({ user: userId }).populate('products.productId');
+    const orders = await OrderModel.find({ userId }).populate("products.productId");
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
+
     res.status(200).json(orders);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
+    res.status(500).json({ error: "Failed to fetch orders" });
   }
 };
 
@@ -43,7 +75,7 @@ const updateOrderStatus = async (req, res) => {
 
     if (orderStatus) order.orderStatus = orderStatus;
     if (paymentStatus) order.paymentStatus = paymentStatus;
-
+   
     await order.save();
 
     res.status(200).json(order);
@@ -55,18 +87,34 @@ const updateOrderStatus = async (req, res) => {
 
 
 // Get all orders for a seller
+
+
 const getSellerOrders = async (req, res) => {
   try {
-    const sellerId = req.user.id; // Assuming seller is logged in
-    const orders = await Order.find({ "products.seller": sellerId })
-      .populate("user", "name email")
+    const sellerId = req.user.id;
+
+    const orders = await OrderModel.find()
+      .populate({
+        path: 'products.productId',
+        model: 'products',
+        match: { seller: sellerId }, // filter at populate level
+      })
+      .populate('user', 'name email')
       .sort({ createdAt: -1 });
 
-    res.json(orders);
+    // Filter out orders where no product matches this seller
+    const sellerOrders = orders.filter(order =>
+      order.products.some(p => p.productId !== null)
+    );
+
+    res.json(sellerOrders);
   } catch (error) {
+    console.error("Error fetching seller orders:", error);
     res.status(500).json({ error: "Failed to fetch seller orders" });
   }
 };
+
+
 
 module.exports = {
 

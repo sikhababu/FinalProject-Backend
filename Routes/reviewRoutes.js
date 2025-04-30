@@ -1,6 +1,7 @@
 const express = require('express');
 const { addReview, getProductReviews } = require('../controllers/reviewController');
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware = require('../Middleware/authMiddleware');
+
 
 const reviewRoutes = express.Router();
 
