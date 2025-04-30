@@ -38,9 +38,8 @@ res.json("Hello World")
 
 app.use("/api", apiRouter)
 
-//app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT,()=>{
 
-//    console.log(`server starts on port ${process.env.PORT}`)
-//})
+   console.log(`server starts on port ${process.env.PORT}`)
+})
 
-module.exports = app;
