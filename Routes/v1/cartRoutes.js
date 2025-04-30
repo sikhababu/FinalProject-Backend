@@ -1,9 +1,9 @@
 const express = require('express')
 
-const { addToCart, removeFromCart, listCart, clearCart } = require('../Controllers/cartControllers')
+const { addToCart, removeFromCart, listCart, clearCart } = require('../../Controllers/cartControllers')
 
-const authMiddleware = require('../Middleware/authMiddleware')
-const { isUser } = require('../Middleware/checkRole')
+const authMiddleware = require('../../Middleware/authMiddleware')
+const { isUser } = require('../../Middleware/checkRole')
 
 const cartRoutes = express.Router()
 

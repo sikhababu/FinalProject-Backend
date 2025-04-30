@@ -1,9 +1,9 @@
 const express = require('express')
 const userRoutes = express.Router()
 
-const { register, login, userProfile, deleteUser, updateUser } = require('../Controllers/authControllers')
-const authMiddleware = require('../Middleware/authMiddleware')
-const { isUser } = require('../Middleware/checkRole')
+const { register, login, userProfile, deleteUser, updateUser } = require('../../Controllers/authControllers')
+const authMiddleware = require('../../Middleware/authMiddleware')
+const { isUser } = require('../../Middleware/checkRole')
 
 
 

@@ -1,17 +1,12 @@
 const express = require('express')
 require('dotenv').config();
 const app = express()
-const userRoutes = require ('./Routes/userRoutes')
+const userRoutes = require ('./Routes/v1/userRoutes')
 const {connectDB} = require ('./Config/dbConnection')
 const cookieParser = require('cookie-parser')
-const cors = require('cors')
-const productRoutes = require('./Routes/productRoutes')
-const adminRoutes = require('./Routes/adminRoutes')
-const cartRoutes = require('./Routes/cartRoutes')
-const paymentRouter = require('./Routes/paymentRoutes');
-const sellerRouter = require('./Routes/sellerRoutes');
-const categoryRoutes = require('./Routes/categoryRoutes');
-const orderRoutes = require('./Routes/orderRoutes');
+const cors = require('cors');
+const apiRouter = require('./Routes');
+
 
 
 
@@ -27,14 +22,16 @@ app.use(cors({
     methods: ['get', 'post', 'delete', 'put', 'option']
 }))
 
-app.use('/user', userRoutes)
-app.use('/admin', adminRoutes)
-app.use('/product', productRoutes)
-app.use('/cart', cartRoutes)
-app.use('/payment', paymentRouter)
-app.use('/seller', sellerRouter)
-app.use('/category', categoryRoutes);
-app.use('/order', orderRoutes);
+app.use("/api", apiRouter)
+
+//app.use('/user', userRoutes)
+//app.use('/admin', adminRoutes)
+//app.use('/product', productRoutes)
+//app.use('/cart', cartRoutes)
+//app.use('/payment', paymentRouter)
+//app.use('/seller', sellerRouter)
+//app.use('/category', categoryRoutes);
+//app.use('/order', orderRoutes);
 
 app.get("/", (req,res) => [
 res.json("Hello World")

@@ -1,7 +1,7 @@
 
 
-const { paymentFunction } = require('../Controllers/paymentControllers')
-const authMiddleware = require('../Middleware/authMiddleware')
+const { paymentFunction } = require('../../Controllers/paymentControllers')
+const authMiddleware = require('../../Middleware/authMiddleware')
 
 
 

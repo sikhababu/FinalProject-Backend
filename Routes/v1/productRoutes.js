@@ -1,11 +1,11 @@
 const express = require('express')
 const productRoutes = express.Router()
-const upload = require('../Middleware/multer')
+const upload = require('../../Middleware/multer')
 
 
-const {createProduct, listProducts, productDetails, updateProduct, deleteProduct, listProductsByCategory, getSellerProducts} = require('../Controllers/productControllers')
+const {createProduct, listProducts, productDetails, updateProduct, deleteProduct, listProductsByCategory, getSellerProducts} = require('../../Controllers/productControllers')
 
-const authMiddleware = require('../Middleware/authMiddleware')
+const authMiddleware = require('../../Middleware/authMiddleware')
 
 
 productRoutes.post("/create",authMiddleware, upload.single("image"), createProduct)

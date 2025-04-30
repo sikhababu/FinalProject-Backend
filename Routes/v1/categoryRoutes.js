@@ -1,8 +1,8 @@
 const express = require('express');
-const { createCategory, listCategories, deleteCategory } = require('../Controllers/categoryControllers');
-const upload = require('../Middleware/multer');
-const authMiddleware = require('../Middleware/authMiddleware');
-const { isAdmin } = require('../Middleware/checkRole');
+const { createCategory, listCategories, deleteCategory } = require('../../Controllers/categoryControllers');
+const upload = require('../../Middleware/multer');
+const authMiddleware = require('../../Middleware/authMiddleware');
+const { isAdmin } = require('../../Middleware/checkRole');
 
 
 const categoryRoutes = express.Router();
