@@ -17,12 +17,10 @@ connectDB()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    methods: ['get', 'post', 'delete', 'put', 'option']
+    origin: process.env.FRONTEND_URL
 }))
 
-app.use("/api", apiRouter)
+
 
 //app.use('/user', userRoutes)
 //app.use('/admin', adminRoutes)
@@ -37,6 +35,8 @@ app.get("/", (req,res) => [
 res.json("Hello World")
 
 ])
+
+app.use("/api", apiRouter)
 
 app.listen(process.env.PORT,()=>{
 
