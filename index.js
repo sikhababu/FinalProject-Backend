@@ -34,6 +34,11 @@ app.use('/seller', sellerRouter)
 app.use('/category', categoryRoutes);
 app.use('/order', orderRoutes);
 
+app.get("/", (req,res) => {
+res.json("Hello World")
+
+})
+
 app.listen(process.env.PORT,()=>{
 
     console.log(`server starts on port ${process.env.PORT}`)
